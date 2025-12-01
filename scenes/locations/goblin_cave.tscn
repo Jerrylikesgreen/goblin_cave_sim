@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8jtxtiatdq1i"]
+
+[ext_resource type="PackedScene" uid="uid://d1fgfn71ubokn" path="res://scenes/locations/base_location/location.tscn" id="1_kq5wb"]
+[ext_resource type="PackedScene" uid="uid://dv7du8vleccvt" path="res://scenes/mobs/goblin.tscn" id="2_apc0q"]
+[ext_resource type="Script" uid="uid://4jyhhhh77v8d" path="res://scripts/goblin_cave.gd" id="2_m0ftf"]
+[ext_resource type="Texture2D" uid="uid://dg0rrdeutf5j4" path="res://resources/locations/goblin_cave.tres" id="3_m0ftf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apc0q"]
+size = Vector2(32, 32)
+
+[node name="GoblinCave" groups=["Base"] instance=ExtResource("1_kq5wb")]
+script = ExtResource("2_m0ftf")
+spawnable = Array[PackedScene]([ExtResource("2_apc0q")])
+
+[node name="Area2D" type="Area2D" parent="." index="0"]
+collision_layer = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("RectangleShape2D_apc0q")
+
+[node name="LocationSprite" parent="." index="1"]
+texture = ExtResource("3_m0ftf")
+region_enabled = true
+region_rect = Rect2(6, 5, 36, 39)

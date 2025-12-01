@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://dv7du8vleccvt"]
+
+[ext_resource type="PackedScene" uid="uid://b5j2fd4ebjhpv" path="res://scenes/mobs/base_mob/mob.tscn" id="1_tjgje"]
+[ext_resource type="SpriteFrames" uid="uid://bwq4y57t88oev" path="res://resources/mobs/goblin_resources/goblin_sprite_frames.tres" id="2_4yait"]
+[ext_resource type="Script" uid="uid://dn0oadwryqkej" path="res://scripts/goblin.gd" id="2_q5pu5"]
+[ext_resource type="Resource" uid="uid://b1wo1mc8ed1gh" path="res://resources/mobs/goblin_resources/goblin_resource.tres" id="3_cno4l"]
+[ext_resource type="Script" uid="uid://hqak4iyr3ipa" path="res://scripts/debug_lable.gd" id="4_bnosw"]
+
+[node name="Goblin" instance=ExtResource("1_tjgje")]
+script = ExtResource("2_q5pu5")
+mob_resource = ExtResource("3_cno4l")
+
+[node name="Sprite" parent="Body" index="0"]
+sprite_frames = ExtResource("2_4yait")
+animation = &"Action"
+offset = Vector2(0, -10)
+
+[node name="DebugLable" type="Label" parent="Body" index="6"]
+offset_left = -16.0
+offset_top = -48.0
+offset_right = 27.0
+offset_bottom = -25.0
+text = "State"
+script = ExtResource("4_bnosw")

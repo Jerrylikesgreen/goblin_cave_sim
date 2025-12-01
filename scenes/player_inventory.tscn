@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://kmp8ywq7mi5v"]
+
+[ext_resource type="Script" uid="uid://c4p6675drffa3" path="res://scripts/player_inventory.gd" id="1_dmp4w"]
+
+[node name="PlayerInventory" type="ItemList"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_columns = 5
+same_column_width = true
+script = ExtResource("1_dmp4w")

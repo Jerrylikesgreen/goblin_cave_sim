@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MobResource" load_steps=4 format=3 uid="uid://b1wo1mc8ed1gh"]
+
+[ext_resource type="Script" uid="uid://dxdgcl55lp5l6" path="res://resources/mobs/mob_resource_script.gd" id="1_y0fcw"]
+[ext_resource type="SpriteFrames" uid="uid://bwq4y57t88oev" path="res://resources/mobs/goblin_resources/goblin_sprite_frames.tres" id="2_fbvpo"]
+[ext_resource type="Resource" uid="uid://cch6jj6vgpl04" path="res://resources/mobs/goblin_resources/goblin_stats_resource.tres" id="3_fu3m4"]
+
+[resource]
+script = ExtResource("1_y0fcw")
+sprite_frames = ExtResource("2_fbvpo")
+stats = ExtResource("3_fu3m4")
+metadata/_custom_type_script = "uid://dxdgcl55lp5l6"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemResource" load_steps=3 format=3 uid="uid://dqx350duijw7u"]
+
+[ext_resource type="Texture2D" uid="uid://25r3jo8fo87b" path="res://assets/bush_apple.png" id="1_crnr6"]
+[ext_resource type="Script" uid="uid://cytxp1wyefoqd" path="res://resources/items/item_resource_script.gd" id="2_p6ph7"]
+
+[resource]
+script = ExtResource("2_p6ph7")
+name = &"Apple"
+tool_tip = "Apple Tooltip"
+item_sprite = ExtResource("1_crnr6")
+metadata/_custom_type_script = "uid://cytxp1wyefoqd"

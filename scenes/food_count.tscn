@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c18sjyasugjbp"]
+
+[ext_resource type="Script" uid="uid://hhak00k07gq0" path="res://scripts/food_count.gd" id="1_aigr2"]
+
+[node name="FoodCount" type="VBoxContainer"]
+script = ExtResource("1_aigr2")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "FoodCount"
+
+[node name="Count" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0"

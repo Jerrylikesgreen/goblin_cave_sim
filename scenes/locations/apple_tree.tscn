@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgv4qkjacs8k0"]
+
+[ext_resource type="PackedScene" uid="uid://d1fgfn71ubokn" path="res://scenes/locations/base_location/location.tscn" id="1_uai3d"]
+[ext_resource type="Script" uid="uid://cxmpafowserx4" path="res://scripts/apple_tree.gd" id="2_fjkgj"]
+[ext_resource type="Texture2D" uid="uid://c77huv53gmbp7" path="res://assets/pngs/props/Minifantasy_ForgottenPlainsProps.png" id="2_ogm5p"]
+
+[node name="AppleTree" instance=ExtResource("1_uai3d")]
+script = ExtResource("2_fjkgj")
+spawn_rate = 5.0
+
+[node name="LocationSprite" parent="." index="0"]
+texture = ExtResource("2_ogm5p")
+region_enabled = true
+region_rect = Rect2(155, 35, 21, 25)

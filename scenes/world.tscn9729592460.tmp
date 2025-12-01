@@ -1,0 +1,104 @@
+[gd_scene load_steps=14 format=3 uid="uid://bf5t71cjrndbh"]
+
+[ext_resource type="Script" uid="uid://bbfb3kgol4knh" path="res://scripts/world.gd" id="1_71j4m"]
+[ext_resource type="PackedScene" uid="uid://8j4sdd8m0ri5" path="res://scenes/map.tscn" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://c8jtxtiatdq1i" path="res://scenes/locations/goblin_cave.tscn" id="3_4wyf3"]
+[ext_resource type="PackedScene" uid="uid://bgv4qkjacs8k0" path="res://scenes/locations/apple_tree.tscn" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://ckakd8hxv6rmk" path="res://scripts/spawn_marker.gd" id="5_7r4gi"]
+[ext_resource type="Script" uid="uid://du0tx814ddr8y" path="res://scripts/day_tracker.gd" id="5_71j4m"]
+[ext_resource type="PackedScene" uid="uid://c18sjyasugjbp" path="res://scenes/food_count.tscn" id="6_qfnet"]
+[ext_resource type="Script" uid="uid://be1xgnbusdoaa" path="res://scripts/build_command.gd" id="7_i7141"]
+[ext_resource type="Texture2D" uid="uid://b7uxj682au781" path="res://assets/spawn_marker.png" id="8_4mrxx"]
+[ext_resource type="Script" uid="uid://c1dpu57mt84py" path="res://scripts/commands.gd" id="8_q5onr"]
+[ext_resource type="Script" uid="uid://b2sqqrav5xevk" path="res://scripts/storage_command.gd" id="10_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://kmp8ywq7mi5v" path="res://scenes/player_inventory.tscn" id="10_w7kh3"]
+[ext_resource type="Script" uid="uid://c6lji81g6318g" path="res://scripts/units_command.gd" id="11_jhx03"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_71j4m")
+
+[node name="Map" parent="." instance=ExtResource("1_nnsk1")]
+
+[node name="Locations" type="Node2D" parent="."]
+
+[node name="AppleTree" parent="Locations" instance=ExtResource("4_k0juu")]
+position = Vector2(632, 240)
+
+[node name="SpawnMarker" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(602, 244)
+texture = ExtResource("8_4mrxx")
+script = ExtResource("5_7r4gi")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="DayTracker" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -21.0
+offset_right = 19.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "0"
+script = ExtResource("5_71j4m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="FoodCount" parent="HUD/HBoxContainer" instance=ExtResource("6_qfnet")]
+layout_mode = 2
+
+[node name="Commands" type="MenuBar" parent="HUD"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.5
+offset_top = -31.0
+offset_right = 50.5
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("8_q5onr")
+
+[node name="Build" type="PopupMenu" parent="HUD/Commands"]
+oversampling_override = 1.0
+hide_on_state_item_selection = true
+script = ExtResource("7_i7141")
+build_options = Array[PackedScene]([ExtResource("3_4wyf3")])
+
+[node name="Units" type="PopupMenu" parent="HUD/Commands"]
+oversampling_override = 1.0
+script = ExtResource("11_jhx03")
+
+[node name="Storage" type="PopupMenu" parent="HUD/Commands"]
+oversampling_override = 1.0
+size = Vector2i(156, 35)
+item_count = 1
+item_0/text = "Toogle Inventory"
+item_0/id = 1
+script = ExtResource("10_e3hyu")
+
+[node name="InventoryContainer" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -169.0
+offset_top = -171.0
+offset_right = 247.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerInventory" parent="HUD/InventoryContainer" instance=ExtResource("10_w7kh3")]
+layout_mode = 2

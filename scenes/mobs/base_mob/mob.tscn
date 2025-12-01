@@ -1,0 +1,151 @@
+[gd_scene load_steps=21 format=3 uid="uid://b5j2fd4ebjhpv"]
+
+[ext_resource type="Script" uid="uid://bunip4j2xw322" path="res://scripts/mob.gd" id="1_bsing"]
+[ext_resource type="Script" uid="uid://dqutuafplf3r1" path="res://scripts/body.gd" id="2_71rcx"]
+[ext_resource type="Script" uid="uid://dxdgcl55lp5l6" path="res://resources/mobs/mob_resource_script.gd" id="2_m3urm"]
+[ext_resource type="Texture2D" uid="uid://blf42vhskaqsy" path="res://assets/pngs/Default.png" id="3_d4cuo"]
+[ext_resource type="SpriteFrames" uid="uid://dontc5q60pgbu" path="res://resources/mobs/mob_sprite_frames.tres" id="3_h8ps3"]
+[ext_resource type="Script" uid="uid://bdrud8c1bfren" path="res://scripts/stats.gd" id="4_7cvjx"]
+[ext_resource type="Script" uid="uid://c27vhg3jhcso8" path="res://scripts/mob_state_machine.gd" id="4_qfijj"]
+[ext_resource type="Script" uid="uid://coqw0xhl4aony" path="res://scripts/mob_options_button.gd" id="4_xsfyf"]
+[ext_resource type="Script" uid="uid://bpo1555y4cvim" path="res://scripts/idle_state.gd" id="5_4lssj"]
+[ext_resource type="Script" uid="uid://blyehfjhgncpi" path="res://scripts/target_flag.gd" id="5_h8ps3"]
+[ext_resource type="Script" uid="uid://btn758d7pgeqo" path="res://scripts/actions.gd" id="5_s64fc"]
+[ext_resource type="Script" uid="uid://b8now54ve7syg" path="res://scripts/explore_state.gd" id="6_pctq5"]
+[ext_resource type="Script" uid="uid://ctvjdmtg0hq34" path="res://scripts/mob_inventory.gd" id="7_ebxvl"]
+[ext_resource type="Script" uid="uid://c88el75pcqpkn" path="res://scripts/action_range.gd" id="11_pctq5"]
+[ext_resource type="Script" uid="uid://bhhdyhwi3n1i0" path="res://scripts/hit_range.gd" id="13_doy77"]
+
+[sub_resource type="Resource" id="Resource_qfijj"]
+script = ExtResource("4_7cvjx")
+metadata/_custom_type_script = "uid://bdrud8c1bfren"
+
+[sub_resource type="Resource" id="Resource_4lssj"]
+script = ExtResource("2_m3urm")
+stats = SubResource("Resource_qfijj")
+metadata/_custom_type_script = "uid://dxdgcl55lp5l6"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4are2"]
+radius = 8.0
+height = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p0kat"]
+radius = 160.798
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pctq5"]
+radius = 16.0
+
+[node name="Mob" type="Node2D"]
+script = ExtResource("1_bsing")
+mob_resource = SubResource("Resource_4lssj")
+
+[node name="EnemyStateMachine" type="Node" parent="."]
+script = ExtResource("4_qfijj")
+
+[node name="IdleState" type="Node" parent="EnemyStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("5_4lssj")
+
+[node name="ExploreState" type="Node" parent="EnemyStateMachine/IdleState"]
+unique_name_in_owner = true
+script = ExtResource("6_pctq5")
+
+[node name="Body" type="CharacterBody2D" parent="." groups=["MobBody"]]
+unique_name_in_owner = true
+collision_mask = 7
+input_pickable = true
+script = ExtResource("2_71rcx")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Body"]
+unique_name_in_owner = true
+sprite_frames = ExtResource("3_h8ps3")
+animation = &"Idle"
+autoplay = "Idle"
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Body"]
+unique_name_in_owner = true
+shape = SubResource("CapsuleShape2D_4are2")
+
+[node name="MobOptionsButton" type="MenuButton" parent="Body"]
+unique_name_in_owner = true
+visible = false
+offset_left = 8.0
+offset_top = -32.0
+offset_right = 73.0
+offset_bottom = -1.0
+scale = Vector2(0.5, 0.5)
+text = "Options"
+item_count = 2
+popup/item_0/text = "Move"
+popup/item_0/id = 0
+popup/item_1/text = "Action"
+popup/item_1/id = 0
+script = ExtResource("4_xsfyf")
+
+[node name="Actions" type="MenuButton" parent="Body"]
+unique_name_in_owner = true
+visible = false
+offset_left = 8.0
+offset_top = -32.0
+offset_right = 73.0
+offset_bottom = -1.0
+scale = Vector2(0.5, 0.5)
+text = "Actions"
+script = ExtResource("5_s64fc")
+
+[node name="ActionRange" type="Area2D" parent="Body"]
+unique_name_in_owner = true
+visible = false
+collision_layer = 0
+collision_mask = 67
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/ActionRange"]
+shape = SubResource("CircleShape2D_p0kat")
+debug_color = Color(0.5073761, 0.5130207, 0.7218027, 0.41960785)
+
+[node name="ExploreRange" type="Area2D" parent="Body"]
+unique_name_in_owner = true
+visible = false
+collision_layer = 0
+collision_mask = 67
+script = ExtResource("11_pctq5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/ExploreRange"]
+shape = SubResource("CircleShape2D_p0kat")
+debug_color = Color(0.5073761, 0.5130207, 0.7218027, 0.41960785)
+
+[node name="MobInventory" type="Node" parent="Body"]
+unique_name_in_owner = true
+script = ExtResource("7_ebxvl")
+
+[node name="HitRange" type="Area2D" parent="Body"]
+script = ExtResource("13_doy77")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/HitRange"]
+shape = SubResource("CircleShape2D_pctq5")
+
+[node name="TargetFlag" type="Marker2D" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0.73333335)
+position = Vector2(40, -32)
+scale = Vector2(0.5, 0.5)
+script = ExtResource("5_h8ps3")
+
+[node name="TextureRect" type="TextureRect" parent="TargetFlag"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 73.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_d4cuo")
+
+[node name="EnemyTimer" type="Timer" parent="."]
+unique_name_in_owner = true

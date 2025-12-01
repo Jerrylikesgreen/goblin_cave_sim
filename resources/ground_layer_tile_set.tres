@@ -1,0 +1,19 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://bs8thqhgmo5xp"]
+
+[ext_resource type="Texture2D" uid="uid://b0hbpfgeg5kus" path="res://assets/pngs/grass.png" id="1_d8oe5"]
+[ext_resource type="Texture2D" uid="uid://bh7yxrq2jgnyd" path="res://assets/pngs/Dirt.png" id="2_nvf5x"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
+texture = ExtResource("1_d8oe5")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_egipe"]
+texture = ExtResource("2_nvf5x")
+0:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_rwgxs")
+sources/1 = SubResource("TileSetAtlasSource_egipe")

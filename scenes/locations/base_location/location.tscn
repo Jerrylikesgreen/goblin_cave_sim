@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1fgfn71ubokn"]
+
+[ext_resource type="Texture2D" uid="uid://n2er0nsnv0rv" path="res://assets/pngs/Door.png" id="1_gjgjs"]
+[ext_resource type="Script" uid="uid://qjh2np3ekrc4" path="res://scripts/location.gd" id="1_j6npq"]
+[ext_resource type="PackedScene" uid="uid://bfiv4pg0y31cg" path="res://scenes/items/apple.tscn" id="2_4n5dx"]
+
+[node name="Location" type="Node2D"]
+script = ExtResource("1_j6npq")
+spawnable = Array[PackedScene]([ExtResource("2_4n5dx")])
+
+[node name="LocationSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("1_gjgjs")
+
+[node name="SpawnProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+offset_left = 17.0
+offset_top = -10.0
+offset_right = 27.0
+offset_bottom = 25.0
+scale = Vector2(0.5, 0.5)
+step = 1.0
+fill_mode = 3
+
+[node name="SpawnTick" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
