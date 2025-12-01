@@ -10,7 +10,7 @@ func get_icon() -> Texture2D:
 	return sprite_frames.get_frame_texture("Idle", 0)
 
 # Optional: helper to get a stat value
-func get_stat(stat: Stats.STAT) -> int:
+func get_stat_value(stat: Stats.STAT) -> int:
 	return stats.get_stat(stat)
 
 # Optional: helper to get stat display name

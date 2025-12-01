@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b5j2fd4ebjhpv"]
+[gd_scene load_steps=19 format=3 uid="uid://b5j2fd4ebjhpv"]
 
 [ext_resource type="Script" uid="uid://bunip4j2xw322" path="res://scripts/mob.gd" id="1_bsing"]
 [ext_resource type="Script" uid="uid://dqutuafplf3r1" path="res://scripts/body.gd" id="2_71rcx"]
@@ -14,7 +14,6 @@
 [ext_resource type="Script" uid="uid://b8now54ve7syg" path="res://scripts/explore_state.gd" id="6_pctq5"]
 [ext_resource type="Script" uid="uid://ctvjdmtg0hq34" path="res://scripts/mob_inventory.gd" id="7_ebxvl"]
 [ext_resource type="Script" uid="uid://c88el75pcqpkn" path="res://scripts/action_range.gd" id="11_pctq5"]
-[ext_resource type="Script" uid="uid://bhhdyhwi3n1i0" path="res://scripts/hit_range.gd" id="13_doy77"]
 
 [sub_resource type="Resource" id="Resource_qfijj"]
 script = ExtResource("4_7cvjx")
@@ -31,9 +30,6 @@ height = 18.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p0kat"]
 radius = 160.798
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_pctq5"]
-radius = 16.0
 
 [node name="Mob" type="Node2D"]
 script = ExtResource("1_bsing")
@@ -117,12 +113,6 @@ debug_color = Color(0.5073761, 0.5130207, 0.7218027, 0.41960785)
 [node name="MobInventory" type="Node" parent="Body"]
 unique_name_in_owner = true
 script = ExtResource("7_ebxvl")
-
-[node name="HitRange" type="Area2D" parent="Body"]
-script = ExtResource("13_doy77")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/HitRange"]
-shape = SubResource("CircleShape2D_pctq5")
 
 [node name="TargetFlag" type="Marker2D" parent="."]
 unique_name_in_owner = true

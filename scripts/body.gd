@@ -4,6 +4,7 @@ signal stopped_moving
 signal action
 signal action_ended
 signal body_requesting_speed(stat:Stats.STAT)
+signal attack
 
 @onready var mob_options_button: MenuButton = %MobOptionsButton
 @onready var sprite: AnimatedSprite2D = %Sprite
@@ -11,12 +12,12 @@ signal body_requesting_speed(stat:Stats.STAT)
 @onready var mob_inventory: MobInventory = %MobInventory
 
 
+var _target: MobBody
 var _moving: bool = false
-var _target:Vector2 
+var _target_pos:Vector2 
 var _speed:int
 var _margin: float = 4.0
-
-
+var _attack: int 
 var _player_controlled: bool = false
 
 func is_player_controlled() ->bool:
@@ -46,11 +47,11 @@ func _on_input_event(_viewport, event, _shape_idx) -> void:
 
 func _physics_process(_delta: float) -> void:
 	if _moving:
-		var to_target: Vector2 = _target - global_position
+		var to_target: Vector2 = _target_pos - global_position
 		var distance := to_target.length()
 		
 		if distance <= _margin:
-			global_position = _target
+			global_position = _target_pos
 			_moving = false
 			velocity = Vector2.ZERO
 			emit_signal("stopped_moving")
@@ -87,18 +88,22 @@ func action_check() -> void:
 			if body.is_in_group("MobBody"):
 				var mob_body: MobBody = body
 				if mob_body.is_player_controlled():
-					sprite.play("Action")
-					
+					attack.emit()
+					_target = mob_body
 			pass
 	
 	emit_signal("action_ended")
 
 
+func body_hurt(dmg_stat: Stats.STAT, dmg_value: int) ->void:
+	
+	pass
+
 func move_to_target(target:Vector2)->void:
 	if _moving:
 		return
 	else:
-		_target = target
+		_target_pos = target
 		_moving = true
 		sprite.play("Moving")
 		

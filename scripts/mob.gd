@@ -46,9 +46,23 @@ func _ready() -> void:
 	body.action_ended.connect(_on_action_ended)
 	actions.action_option_pressed.connect(_on_action_option_pressed)
 	enemy_state_machine.explore_state_start.connect(_on_explore_state_start)
+	body.body_requesting_stat_value.connect(_on_requesting_stat_value)
+	body.attack.connect(_on_attack)
 
 
+func _on_attack()->void:
+	_state_change(MobState.ACTION)
+	body.sprite.play("Action")
+	var dmg_stat = Stats.STAT.ATK
+	var dmg_value = mob_resource.get_stat_value(dmg_stat)
+	body._target.body_hurt(dmg_stat, dmg_value)
+	pass
 
+func _on_requesting_stat_value(stat:Stats.STAT)-> int:
+	var requested_stat: int 
+	mob_resource.get_stat(stat)
+	
+	return requested_stat
 
 func _on_body_set_up(stat:Stats.STAT)->void:
 	var value = requesting_stat(stat)
