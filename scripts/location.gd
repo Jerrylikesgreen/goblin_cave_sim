@@ -46,7 +46,7 @@ func _spawn()->void:
 		var spawn: Node2D = spawnable[0].instantiate()
 		_spawn_count += 1
 		if _player_controlled:
-			spawn.player_spawn()
+			spawn.player_controlled()
 			Events.add_to_hoard(spawn)
 			print("Player")
 		if spawn.is_in_group("Item"):

@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cyew4n4ks83y6"]
+
+[node name="EnemyTimer" type="Timer"]

@@ -13,7 +13,7 @@
 [ext_resource type="Script" uid="uid://b2sqqrav5xevk" path="res://scripts/storage_command.gd" id="10_e3hyu"]
 [ext_resource type="PackedScene" uid="uid://kmp8ywq7mi5v" path="res://scenes/player_inventory.tscn" id="10_w7kh3"]
 [ext_resource type="Script" uid="uid://c6lji81g6318g" path="res://scripts/units_command.gd" id="11_jhx03"]
-[ext_resource type="Script" uid="uid://c1n8vhbf8mjli" path="res://scenes/player_camera.gd" id="14_o8fc1"]
+[ext_resource type="Script" uid="uid://c1n8vhbf8mjli" path="res://scripts/player_camera.gd" id="14_o8fc1"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_71j4m")

@@ -2,7 +2,7 @@ class_name EnemyStateMachine extends Node
 
 signal explore_state_start
 
-@onready var enemy_timer: Timer = %EnemyTimer
+var _enemy_timer: Timer
 @onready var idle_state: IdleState = %IdleState
 @onready var explore_state: ExploreState = %ExploreState
 
@@ -12,9 +12,6 @@ var _prior_state: EnemyState
 
 var _initial_startup: bool = true
 
-func _ready() -> void:
-	enemy_timer.timeout.connect(_on_timeout)
-	explore_state.explore_state_start.connect(_on_explore_state_start)
 
 func _on_explore_state_start()->void:
 	explore_state_start.emit()
@@ -28,6 +25,14 @@ func _on_explore_state_start()->void:
 # ACTION: performes logic/function depending on objective when at pos. 
 # REST: If needed can rest to restore stats / resources if needed. 
 # IDLE: if rest is not needed will go to Idle then Back to Explore. 
+
+func run()->void:
+	_enemy_timer = Timer.new()
+	add_child(_enemy_timer)
+	_enemy_timer.timeout.connect(_on_timeout)
+	_enemy_timer.start(2.0)
+	explore_state.explore_state_start.connect(_on_explore_state_start)
+	
 
 
 func _on_timeout()->void:

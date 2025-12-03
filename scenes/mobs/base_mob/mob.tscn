@@ -36,6 +36,7 @@ script = ExtResource("1_bsing")
 mob_resource = SubResource("Resource_4lssj")
 
 [node name="EnemyStateMachine" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("4_qfijj")
 
 [node name="IdleState" type="Node" parent="EnemyStateMachine"]
@@ -136,6 +137,3 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_d4cuo")
-
-[node name="EnemyTimer" type="Timer" parent="."]
-unique_name_in_owner = true

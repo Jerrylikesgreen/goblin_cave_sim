@@ -11,7 +11,7 @@ func get_icon() -> Texture2D:
 
 # Optional: helper to get a stat value
 func get_stat_value(stat: Stats.STAT) -> int:
-	return stats.get_stat(stat)
+	return stats.get_stat_value(stat)
 
 # Optional: helper to get stat display name
 func get_stat_name(stat: Stats.STAT) -> String:

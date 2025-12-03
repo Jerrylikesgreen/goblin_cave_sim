@@ -2,13 +2,25 @@ class_name Mob extends Node2D
 
 signal mob_state_change(state: MobState)
 
+@onready var explore_range: ExploreRange = %ExploreRange
+@onready var action_range: Area2D = %ActionRange
+@onready var actions: Actions = %Actions
+@onready var body: MobBody = %Body
+
+@onready var sprite: AnimatedSprite2D = %Sprite
+@onready var collision_shape: CollisionShape2D = %CollisionShape
+@onready var target_flag: Marker2D = %TargetFlag
+@onready var mob_options_button: MobOptionsButton = %MobOptionsButton
+@onready var enemy_state_machine: EnemyStateMachine = %EnemyStateMachine
+
+
 
 @export var mob_resource: MobResource
 
 enum MobState {IDLE, SELECTED_COMMAND,SELECTED_ACTION, MOVING, ACTION, HURT, DEAD}
 var _mob_state: MobState = MobState.IDLE
 var _prior_state: MobState
-
+var _player_controlled:bool = false
 
 
 const MOB_STATE_TO_STRING = {
@@ -20,25 +32,13 @@ const MOB_STATE_TO_STRING = {
 	MobState.HURT: "HURT",
 	MobState.DEAD: "DEAD"
 }
-@onready var explore_range: ExploreRange = %ExploreRange
-@onready var action_range: Area2D = %ActionRange
-@onready var actions: Actions = %Actions
-@onready var body: MobBody = %Body
 
-@onready var sprite: AnimatedSprite2D = %Sprite
-@onready var collision_shape: CollisionShape2D = %CollisionShape
-@onready var target_flag: Marker2D = %TargetFlag
-@onready var mob_options_button: MobOptionsButton = %MobOptionsButton
-@onready var enemy_timer: Timer = %EnemyTimer
-@onready var enemy_state_machine: EnemyStateMachine = $EnemyStateMachine
 
-var _player_controlled:bool = false
 
 func is_player_controlled() ->bool:
 	return _player_controlled
 
 func _ready() -> void:
-	body.body_requesting_speed.connect(_on_body_set_up)
 	mob_options_button.option_pressed.connect(_on_option_pressed)
 	target_flag.target_flag_set.connect(_on_target_flag_set)
 	body.stopped_moving.connect(_on_stopped_moving)
@@ -48,6 +48,9 @@ func _ready() -> void:
 	enemy_state_machine.explore_state_start.connect(_on_explore_state_start)
 	body.body_requesting_stat_value.connect(_on_requesting_stat_value)
 	body.attack.connect(_on_attack)
+	if !is_player_controlled():
+		enemy_state_machine.run()
+
 
 
 func _on_attack()->void:
@@ -58,25 +61,21 @@ func _on_attack()->void:
 	body._target.body_hurt(dmg_stat, dmg_value)
 	pass
 
-func _on_requesting_stat_value(stat:Stats.STAT)-> int:
-	var requested_stat: int 
-	mob_resource.get_stat(stat)
-	
-	return requested_stat
+func _on_requesting_stat_value(stat:Stats.STAT)-> void:
+	var value:int = mob_resource.get_stat_value(stat)
+	body.set_stat(stat, value)
+	print("Setting speed")
 
-func _on_body_set_up(stat:Stats.STAT)->void:
-	var value = requesting_stat(stat)
-	body._speed = value
-	print(str(value) + " being sent to body as speed")
 
-func requesting_stat(stat: Stats.STAT)->int:
+func requesting_stat_value(stat: Stats.STAT)->int:
 	var requested_stat_value:  = mob_resource.stats.get_stat_value(stat)
 	return requested_stat_value
 
-func player_spawn()->void:
+func player_controlled()->void:
 	_player_controlled = true
-	body.player_spawn()
-	enemy_timer.start(2.0)
+
+	
+
 
 func _on_explore_state_start() ->void:
 	if _mob_state == MobState.IDLE:

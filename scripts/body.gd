@@ -3,7 +3,7 @@ class_name MobBody extends CharacterBody2D
 signal stopped_moving
 signal action
 signal action_ended
-signal body_requesting_speed(stat:Stats.STAT)
+signal body_requesting_stat_value(stat:Stats.STAT)
 signal attack
 
 @onready var mob_options_button: MenuButton = %MobOptionsButton
@@ -25,12 +25,12 @@ func is_player_controlled() ->bool:
 
 func _ready() -> void:
 	input_event.connect(_on_input_event)
-	var parent: bool = get_parent()._player_controlled
-	if parent:
+	var parent: Mob = get_parent()
+	if parent.is_player_controlled():
 		_player_controlled = true
-	
+
 func _on_input_event(_viewport, event, _shape_idx) -> void:
-	if _player_controlled:
+	if is_player_controlled():
 		if event is InputEventMouseButton \
 		and event.button_index == MOUSE_BUTTON_LEFT \
 		and event.pressed:
@@ -40,13 +40,15 @@ func _on_input_event(_viewport, event, _shape_idx) -> void:
 			
 			mob_options_button.visible = true
 			print("mob_selected")
-			if _speed == 0:
-				body_requesting_speed.emit(Stats.STAT.SPD)
 	else:
 		return
 
+
 func _physics_process(_delta: float) -> void:
 	if _moving:
+		if !_speed:
+			body_requesting_stat_value.emit(Stats.STAT.SPD)
+		
 		var to_target: Vector2 = _target_pos - global_position
 		var distance := to_target.length()
 		
@@ -65,9 +67,14 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 
 
-func player_spawn()->void:
-	_player_controlled = true
 
+
+func set_stat(stat:Stats.STAT, value:int)->void:
+	match stat:
+		Stats.STAT.SPD:
+			_speed = value
+		Stats.STAT.ATK:
+			_attack = value
 
 
 
