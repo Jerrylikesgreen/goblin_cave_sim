@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b5j2fd4ebjhpv"]
+[gd_scene load_steps=20 format=3 uid="uid://b5j2fd4ebjhpv"]
 
 [ext_resource type="Script" uid="uid://bunip4j2xw322" path="res://scripts/mob.gd" id="1_bsing"]
 [ext_resource type="Script" uid="uid://dqutuafplf3r1" path="res://scripts/body.gd" id="2_71rcx"]
@@ -28,8 +28,11 @@ metadata/_custom_type_script = "uid://dxdgcl55lp5l6"
 radius = 8.0
 height = 18.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pctq5"]
+radius = 24.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_p0kat"]
-radius = 160.798
+radius = 128.0
 
 [node name="Mob" type="Node2D"]
 script = ExtResource("1_bsing")
@@ -43,7 +46,7 @@ script = ExtResource("4_qfijj")
 unique_name_in_owner = true
 script = ExtResource("5_4lssj")
 
-[node name="ExploreState" type="Node" parent="EnemyStateMachine/IdleState"]
+[node name="ExploreState" type="Node" parent="EnemyStateMachine"]
 unique_name_in_owner = true
 script = ExtResource("6_pctq5")
 
@@ -97,8 +100,7 @@ collision_layer = 0
 collision_mask = 67
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body/ActionRange"]
-shape = SubResource("CircleShape2D_p0kat")
-debug_color = Color(0.5073761, 0.5130207, 0.7218027, 0.41960785)
+shape = SubResource("CircleShape2D_pctq5")
 
 [node name="ExploreRange" type="Area2D" parent="Body"]
 unique_name_in_owner = true

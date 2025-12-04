@@ -2,6 +2,8 @@ class_name Goblin extends Mob
 
 
 
+
+
 func _on_action_option_pressed(option: Actions.ACTION_OPTION)->void:
 	if option == Actions.ACTION_OPTION.STORE_FOOD and _mob_state == MobState.SELECTED_ACTION:
 		print("triger action_range")

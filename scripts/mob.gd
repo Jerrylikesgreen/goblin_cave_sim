@@ -1,6 +1,6 @@
 class_name Mob extends Node2D
 
-signal mob_state_change(state: MobState)
+signal mob_state_change(state: Goblin.MobState)
 
 @onready var explore_range: ExploreRange = %ExploreRange
 @onready var action_range: Area2D = %ActionRange
@@ -33,11 +33,6 @@ const MOB_STATE_TO_STRING = {
 	MobState.DEAD: "DEAD"
 }
 
-
-
-func is_player_controlled() ->bool:
-	return _player_controlled
-
 func _ready() -> void:
 	mob_options_button.option_pressed.connect(_on_option_pressed)
 	target_flag.target_flag_set.connect(_on_target_flag_set)
@@ -52,6 +47,10 @@ func _ready() -> void:
 		enemy_state_machine.run()
 
 
+func is_player_controlled() ->bool:
+	return _player_controlled
+
+
 
 func _on_attack()->void:
 	_state_change(MobState.ACTION)
@@ -59,7 +58,6 @@ func _on_attack()->void:
 	var dmg_stat = Stats.STAT.ATK
 	var dmg_value = mob_resource.get_stat_value(dmg_stat)
 	body._target.body_hurt(dmg_stat, dmg_value)
-	pass
 
 func _on_requesting_stat_value(stat:Stats.STAT)-> void:
 	var value:int = mob_resource.get_stat_value(stat)
@@ -68,19 +66,25 @@ func _on_requesting_stat_value(stat:Stats.STAT)-> void:
 
 
 func requesting_stat_value(stat: Stats.STAT)->int:
-	var requested_stat_value:  = mob_resource.stats.get_stat_value(stat)
+	var requested_stat_value:int  = mob_resource.stats.get_stat_value(stat)
 	return requested_stat_value
 
 func player_controlled()->void:
 	_player_controlled = true
 
-	
+
+func get_random_point_in_area(area: Area2D) -> Vector2:
+	var shape := area.get_node("CollisionShape2D").shape as CircleShape2D
+	var r = shape.radius
+	var angle = randf() * TAU
+	var dist = sqrt(randf()) * r  # uniform distribution
+	var local_point = Vector2(dist, 0).rotated(angle)
+	return area.to_global(local_point)
+
 
 
 func _on_explore_state_start() ->void:
 	if _mob_state == MobState.IDLE:
-		# TODO
-		# trigger action range to detect an objective. 
 		var objective: Node2D = explore_range.detect_objective()
 		
 		if objective == MobBody:
@@ -90,8 +94,14 @@ func _on_explore_state_start() ->void:
 				_state_change(MobState.MOVING)
 				body.move_to_target(target.global_position)
 
-	else:
-		pass
+		else:
+			if explore_range.is_visible() == false:
+				explore_range.set_visible(true)
+			var target_pos = get_random_point_in_area(explore_range)
+			body.move_to_target(target_pos)
+			explore_range.set_visible(false)
+
+
 
 func get_current_state_as_string(state: MobState )->String:
 	return MOB_STATE_TO_STRING[state]
@@ -107,10 +117,14 @@ func _on_action()->void:
 
 func _on_action_ended()->void:
 	_state_change(MobState.IDLE)
+	print("Action Ended - Going to Idle")
+	
 
 func _on_stopped_moving()->void:
 	if _mob_state == MobState.MOVING:
 		_state_change(MobState.IDLE)
+		
+		
 	else:
 		return
 
@@ -142,14 +156,16 @@ func _check_actions()->void:
 
 func _state_change(state: MobState)->void:
 	if state == _mob_state:
-		return 
-	_prior_state = _mob_state
-	_mob_state = state
-	emit_signal("mob_state_change", state)
+		enemy_state_machine.run_idle_state()
+		mob_state_change.emit(state)
+	else:
+		_prior_state = _mob_state
+		_mob_state = state
+	
+	mob_state_change.emit(state)
 
 func _move_pressed()->void:
 	if target_flag.is_visible():
 		print_debug("Target flag is visible")
 		return
 	target_flag.move_option_selected()
-	pass
