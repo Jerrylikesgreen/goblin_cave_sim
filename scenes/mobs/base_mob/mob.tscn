@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b5j2fd4ebjhpv"]
+[gd_scene load_steps=22 format=3 uid="uid://b5j2fd4ebjhpv"]
 
 [ext_resource type="Script" uid="uid://bunip4j2xw322" path="res://scripts/mob.gd" id="1_bsing"]
 [ext_resource type="Script" uid="uid://dqutuafplf3r1" path="res://scripts/body.gd" id="2_71rcx"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://bxfafeloeiunq" path="res://scenes/mobs/base_mob/chase_state.gd" id="7_doy77"]
 [ext_resource type="Script" uid="uid://ctvjdmtg0hq34" path="res://scripts/mob_inventory.gd" id="7_ebxvl"]
 [ext_resource type="Script" uid="uid://c88el75pcqpkn" path="res://scripts/action_range.gd" id="11_pctq5"]
+[ext_resource type="Script" uid="uid://ddaljqnynx7lv" path="res://scenes/mobs/base_mob/health_bar.gd" id="16_beybr"]
 
 [sub_resource type="Resource" id="Resource_qfijj"]
 script = ExtResource("4_7cvjx")
@@ -64,7 +65,7 @@ script = ExtResource("2_71rcx")
 [node name="Sprite" type="AnimatedSprite2D" parent="Body"]
 unique_name_in_owner = true
 sprite_frames = ExtResource("3_h8ps3")
-animation = &"Idle"
+animation = &"Hit"
 autoplay = "Idle"
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Body"]
@@ -121,6 +122,18 @@ debug_color = Color(0.5073761, 0.5130207, 0.7218027, 0.41960785)
 [node name="MobInventory" type="Node" parent="Body"]
 unique_name_in_owner = true
 script = ExtResource("7_ebxvl")
+
+[node name="HealthBar" type="ProgressBar" parent="Body"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = -32.0
+offset_right = 20.0
+offset_bottom = -5.0
+max_value = 10.0
+step = 1.0
+value = 10.0
+fill_mode = 2
+script = ExtResource("16_beybr")
 
 [node name="TargetFlag" type="Marker2D" parent="."]
 unique_name_in_owner = true

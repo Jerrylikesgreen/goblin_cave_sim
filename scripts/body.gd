@@ -53,7 +53,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 			mob_options_button.visible = true
 		print("mob_selected")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not _moving:
 		return
 
@@ -179,6 +179,8 @@ func _on_animation_finished()->void:
 	sprite.animation_finished.disconnect(_on_animation_finished)
 	_hit = false
 	hit_ended.emit()
+	sprite.play("Idle")
+	print("Hit Ended")
 	
 
 func _on_body_entered_during_chase(body: Node2D)->void:

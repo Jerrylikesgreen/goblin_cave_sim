@@ -9,4 +9,6 @@ def = 10
 atk = 10
 intel = 10
 will = 10
+health = 10
+max_health = 10
 metadata/_custom_type_script = "uid://bdrud8c1bfren"

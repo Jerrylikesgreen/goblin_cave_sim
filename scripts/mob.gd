@@ -1,7 +1,7 @@
 class_name Mob extends Node2D
 
 signal mob_state_change(state: Goblin.MobState)
-signal mob_hit
+signal mob_hit(new_health:int, max_health:int)
 
 @onready var explore_range: ExploreRange = %ExploreRange
 @onready var action_range: Area2D = %ActionRange
@@ -43,6 +43,7 @@ func _ready() -> void:
 	body.body_requesting_stat_value.connect(_on_requesting_stat_value)
 	body.attack.connect(_on_attack)
 	body.hit_start.connect(_on_hit)
+	body.hit_ended.connect(_on_hit_ended)
 	actions.action_option_pressed.connect(_on_action_option_pressed)
 	enemy_state_machine.explore_state_start.connect(_on_explore_state_start)
 	enemy_state_machine.is_chase_state.connect(_on_is_chase_state)
@@ -176,7 +177,28 @@ func _move_pressed()->void:
 	target_flag.move_option_selected()
 
 func _on_hit(dmg_stat: Stats.STAT, dmg_value: int)->void:
-	mob_hit.emit()
+	_state_change(MobState.HURT)
+	_dmg(dmg_stat, dmg_value)
+	
+
+func _on_hit_ended()->void:
+	_state_change(MobState.IDLE)
+
+
+
+func _dmg(dmg_stat: Stats.STAT, dmg_value: int)->void:
+	
+	match dmg_stat:
+		Stats.STAT.ATK:
+			var defence_value: int = mob_resource.get_stat_value(Stats.STAT.DEF)
+			var defence_resistence: float = defence_value * .5
+			var dmg_taken: float = dmg_value - defence_resistence
+			var current_health: int = mob_resource.get_stat_value(Stats.STAT.HEALTH)
+			var new_health: int = current_health - int(dmg_taken)
+			mob_resource.stats.set_stat_value(Stats.STAT.HEALTH, new_health)
+			mob_hit.emit(new_health, mob_resource.stats.max_health)
+			print(self,  " took ", dmg_taken, " of damage")
+			print(self, "'s new hp is ", new_health)
 
 func _on_is_chase_state(is_chase_state: bool)->void:
 	_chasing = is_chase_state

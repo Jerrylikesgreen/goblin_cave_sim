@@ -12,7 +12,8 @@ mob_resource = ExtResource("3_cno4l")
 
 [node name="Sprite" parent="Body" index="0"]
 sprite_frames = ExtResource("2_4yait")
-animation = &"Action"
+frame = 1
+frame_progress = 1.0
 offset = Vector2(0, -10)
 
 [node name="DebugLable" type="Label" parent="Body" index="6"]
