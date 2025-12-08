@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b5j2fd4ebjhpv"]
+[gd_scene load_steps=21 format=3 uid="uid://b5j2fd4ebjhpv"]
 
 [ext_resource type="Script" uid="uid://bunip4j2xw322" path="res://scripts/mob.gd" id="1_bsing"]
 [ext_resource type="Script" uid="uid://dqutuafplf3r1" path="res://scripts/body.gd" id="2_71rcx"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://blyehfjhgncpi" path="res://scripts/target_flag.gd" id="5_h8ps3"]
 [ext_resource type="Script" uid="uid://btn758d7pgeqo" path="res://scripts/actions.gd" id="5_s64fc"]
 [ext_resource type="Script" uid="uid://b8now54ve7syg" path="res://scripts/explore_state.gd" id="6_pctq5"]
+[ext_resource type="Script" uid="uid://bxfafeloeiunq" path="res://scenes/mobs/base_mob/chase_state.gd" id="7_doy77"]
 [ext_resource type="Script" uid="uid://ctvjdmtg0hq34" path="res://scripts/mob_inventory.gd" id="7_ebxvl"]
 [ext_resource type="Script" uid="uid://c88el75pcqpkn" path="res://scripts/action_range.gd" id="11_pctq5"]
 
@@ -49,6 +50,10 @@ script = ExtResource("5_4lssj")
 [node name="ExploreState" type="Node" parent="EnemyStateMachine"]
 unique_name_in_owner = true
 script = ExtResource("6_pctq5")
+
+[node name="ChaseState" type="Node" parent="EnemyStateMachine"]
+unique_name_in_owner = true
+script = ExtResource("7_doy77")
 
 [node name="Body" type="CharacterBody2D" parent="." groups=["MobBody"]]
 unique_name_in_owner = true

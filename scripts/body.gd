@@ -6,6 +6,8 @@ signal action
 signal action_ended
 signal body_requesting_stat_value(stat: Stats.STAT)
 signal attack
+signal hit_ended
+signal hit_start(dmg_stat: Stats.STAT, dmg_value: int)
 
 @onready var mob_options_button: MenuButton = %MobOptionsButton
 @onready var sprite: AnimatedSprite2D = %Sprite
@@ -20,6 +22,8 @@ var _speed: int = 0
 var _margin: float = 4.0
 var _attack: int = 0
 var _player_controlled: bool = false
+var _chasing: bool
+var _hit:bool
 
 # Tunables
 @export var move_multiplier: float = 10.0   # scale factor for _speed -> pixels/sec
@@ -31,17 +35,13 @@ func is_player_controlled() -> bool:
 	return _player_controlled
 
 func _ready() -> void:
-	# connect input_event explicitly to avoid ambiguity
-	if has_signal("input_event"):
-		connect("input_event", Callable(self, "_on_input_event"))
-	# detect if parent Mob is player controlled (safe cast)
+	connect("input_event", Callable(self, "_on_input_event"))
 	var parent = get_parent()
 	if parent and parent is Mob:
 		if (parent as Mob).is_player_controlled():
 			_player_controlled = true
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	# Only show options for player-controlled mobs
 	if not is_player_controlled():
 		return
 
@@ -148,8 +148,12 @@ func action_check() -> void:
 		action_range.set_visible(false)
 
 func body_hurt(dmg_stat: Stats.STAT, dmg_value: int) -> void:
-	# implement health reduction, animation, etc.
-	pass
+	hit_start.emit(dmg_stat, dmg_value)
+	_hit = true
+	_moving = false
+	sprite.play("Hit")
+	sprite.animation_finished.connect(_on_animation_finished)
+	print(self, " Got hurt by : ", dmg_value, " Amount of dmg")
 
 func move_to_target(target: Vector2) -> void:
 	if _moving:
@@ -161,3 +165,27 @@ func move_to_target(target: Vector2) -> void:
 	# play moving animation
 	if sprite:
 		sprite.play("Moving")
+
+
+func set_chase(v: bool) ->void:
+	_chasing = v
+	if _chasing:
+		action_range.set_visible(true)
+		action_range.body_entered.connect(_on_body_entered_during_chase)
+		
+
+
+func _on_animation_finished()->void:
+	sprite.animation_finished.disconnect(_on_animation_finished)
+	_hit = false
+	hit_ended.emit()
+	
+
+func _on_body_entered_during_chase(body: Node2D)->void:
+	if body.is_in_group("MobBody") and body.is_player_controlled():
+		_target = body
+		_moving = false
+		velocity = Vector2.ZERO
+		stopped_moving.emit()
+		action_check()
+		

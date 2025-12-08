@@ -14,7 +14,7 @@ func detect_objective() -> Node2D:
 				var mob_body: MobBody = body
 				if mob_body.is_player_controlled():
 					objective = mob_body
-					
+					print("Player Body Detected. ")
 		var _detected_areas: Array[Area2D] = get_overlapping_areas()
 		## TODO - work out logic for other objective, like locations, ect. 
 		return objective
